@@ -82,6 +82,22 @@ class Router{
      */
 	function init(){
 
+		// Handle CLI mode (for cron jobs)
+		if (php_sapi_name() === 'cli') {
+			global $argv;
+			// Check if URL is passed as command line argument
+			if (!empty($argv[1])) {
+				$path = $argv[1];
+				$this->run($path);
+				return;
+			}
+			// If no argument, default to index
+			$controller_name = ucfirst(DEFAULT_PAGE)."Controller";
+			$controller = new IndexController;
+			$controller->{DEFAULT_PAGE_ACTION}(); 
+			return;
+		}
+
 		$basepath = implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1)) . '/';
 		
 		// for now, we are only interested with the path only.

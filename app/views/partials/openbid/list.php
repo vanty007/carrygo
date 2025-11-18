@@ -226,13 +226,13 @@
         				const diffInMs = endDate - startDate;
         				const totalMinutes = Math.floor(diffInMs / (1000 * 60));
         				const hours = Math.floor(totalMinutes / 60);
-        				let minutes = totalMinutes % 60;
-						let remHours = open_date-hours;
-						if (remHours < 0) {
-							remHours = 0;
-							minutes = 0;
-						}
-						return `${remHours} hour(s), ${minutes} minute(s)`;
+        				let minutes = 60 - totalMinutes % 60;
+        				let remHours = open_date - hours;
+        				if (remHours < 0) {
+        					remHours = 0;
+        					minutes = 0;
+        				}
+        				return `${remHours} hour(s), ${minutes} minute(s)`;
         			},
 
         			load: function() {
