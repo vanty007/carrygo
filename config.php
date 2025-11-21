@@ -1,100 +1,107 @@
 <?php
-	define('DEVELOPMENT_MODE' , true);// set to false when in production
-	
-	// return the full path application directory
-	define('ROOT', str_replace('\\', '/', dirname(__FILE__)) . '/');
-	
-	// return the application directory name.
-	define('ROOT_DIR_NAME' , basename(ROOT)); 
+define('DEVELOPMENT_MODE', true); // set to false when in production
 
-	define('SITE_NAME' , "CarryGo");
-	
-	
-	// Get Site Address Dynamically
-	$site_addr = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-	
-	//Must end with /
-	$site_addr =rtrim($site_addr,"/\\") . "/"; 
-	
-	// Can Be Set Manually Like "http://localhost/mysite/".
-	define('SITE_ADDR' , $site_addr);
-	define('ADMIN_ADDR' , "tayo.ogundeji@yahoo.com");
-	
-	define('APP_ID',"f2440a0c8d5231aad3b3204d8b42b7d6");
-	
-	// Application Default Color (Mostly Used By Mobile)
-	define('META_THEME_COLOR',"#000000"); 
+// return the full path application directory
+define('ROOT', str_replace('\\', '/', dirname(__FILE__)) . '/');
 
-	// Application Files and Directories 
-	define('IMG_DIR',  "assets/images/");
-	define('SITE_FAVICON',IMG_DIR . "favicon.png");
-	define('SITE_LOGO',IMG_DIR . "logo.png");
-	define('CSS_DIR',SITE_ADDR . "assets/css/");
-	define('JS_DIR',SITE_ADDR . "assets/js/");
-	define('APP_DIR',"app/");
-	define('SYSTEM_DIR','system/');
-	define('HELPERS_DIR','helpers/');
-	define('LIBS_DIR','libs/');
-	define('LANGS_DIR','languages/');
-	define('MODELS_DIR',APP_DIR . "models/");
-	define('CONTROLLERS_DIR',APP_DIR . 'controllers/');
-	define('VIEWS_DIR',APP_DIR . 'views/');
-	define('LAYOUTS_DIR',VIEWS_DIR . 'layouts/');
-	define('PAGES_DIR',VIEWS_DIR . 'partials/');
-	
-	// File Upload Directories 
-	define('UPLOAD_DIR', 'uploads/');
-	define('UPLOAD_FILE_DIR',UPLOAD_DIR . 'files/');
-	define('UPLOAD_IMG_DIR', UPLOAD_DIR . 'photos/');
-	define('MAX_UPLOAD_FILESIZE',trim(ini_get('upload_max_filesize')));
-	
-	
+// return the application directory name.
+define('ROOT_DIR_NAME', basename(ROOT));
 
-	// Application Page Settings
-	define("DEFAULT_PAGE","index"); //Default Controller Class
-	define("DEFAULT_PAGE_ACTION","index"); //Default Controller Action
-	
-	define('DEFAULT_LAYOUT',LAYOUTS_DIR . 'main_layout.php');
-	define('HOME_PAGE','home');
-	define("DEFAULT_LANGUAGE","english"); //Default Language
-	
-	
-	
-	// Page Meta Information
-	define('META_AUTHOR','');
-	define('META_DESCRIPTION','');
-	define('META_KEYWORDS','');
-	define('META_VIEWPORT','width=device-width, initial-scale=1.0');
-	define('PAGE_CHARSET','UTF-8');
+define('SITE_NAME', "CarryGo");
 
-	define('USE_SMTP',true);
-	define('SMTP_USERNAME','lucassctt4@gmail.com');
-	define('SMTP_PASSWORD','jmpn bmpp domy gmau');
-	define('SMTP_HOST','smtp.gmail.com');
-	define('SMTP_PORT','465');
-	
-	//Default Email Sender Details. Please set this even if you are not using SMTP
-	define('DEFAULT_EMAIL','lucassctt4@gmail.com');
-	define('DEFAULT_EMAIL_ACCOUNT_NAME','lucs');
 
-	
-	// Database Configuration Settings
-	define('DB_HOST','localhost');
-	define('DB_USERNAME','root');
-	define('DB_PASSWORD','Root@123.');
-	define('DB_NAME','televet');
-	define('DB_TYPE','mysql');
-	define('DB_PORT',''); //You can leave empty if using default.
-	
-	define('DB_CHARSET','utf8');
-	
-	define('MAX_RECORD_COUNT', 50); //Default Max Records to Retrieve  per Page
-	define('ORDER_TYPE','DESC');  //Default Order Type
-	
-	// Active User Profile Details
-	define('USER_ID',(isset($_SESSION[APP_ID.'user_bid']) ? $_SESSION[APP_ID.'user_bid']["msisdn"] : null ));
-	define('USER_POINTS',(isset($_SESSION[APP_ID.'user_bid']) ? $_SESSION[APP_ID.'user_bid']["points"] : null ));
-	
-	
-	
-	
+// Get Site Address Dynamically - fall back when running from CLI (e.g. cron)
+$is_https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+$script_dir = isset($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : '';
+$site_addr = ($is_https ? 'https' : 'http') . '://' . $host . $script_dir;
+if (PHP_SAPI === 'cli') {
+	$cli_base = getenv('APP_BASE_URL');
+	if (!empty($cli_base)) {
+		$site_addr = $cli_base;
+	} else {
+		$site_addr = 'http://localhost/';
+	}
+}
+
+//Must end with /
+$site_addr = rtrim($site_addr, "/\\") . "/";
+
+// Can Be Set Manually Like "http://localhost/mysite/".
+define('SITE_ADDR', $site_addr);
+define('ADMIN_ADDR', "tayo.ogundeji@yahoo.com");
+
+define('APP_ID', "f2440a0c8d5231aad3b3204d8b42b7d6");
+
+// Application Default Color (Mostly Used By Mobile)
+define('META_THEME_COLOR', "#000000");
+
+// Application Files and Directories 
+define('IMG_DIR',  "assets/images/");
+define('SITE_FAVICON', IMG_DIR . "favicon.png");
+define('SITE_LOGO', IMG_DIR . "logo.png");
+define('CSS_DIR', SITE_ADDR . "assets/css/");
+define('JS_DIR', SITE_ADDR . "assets/js/");
+define('APP_DIR', "app/");
+define('SYSTEM_DIR', 'system/');
+define('HELPERS_DIR', 'helpers/');
+define('LIBS_DIR', 'libs/');
+define('LANGS_DIR', 'languages/');
+define('MODELS_DIR', APP_DIR . "models/");
+define('CONTROLLERS_DIR', APP_DIR . 'controllers/');
+define('VIEWS_DIR', APP_DIR . 'views/');
+define('LAYOUTS_DIR', VIEWS_DIR . 'layouts/');
+define('PAGES_DIR', VIEWS_DIR . 'partials/');
+
+// File Upload Directories 
+define('UPLOAD_DIR', 'uploads/');
+define('UPLOAD_FILE_DIR', UPLOAD_DIR . 'files/');
+define('UPLOAD_IMG_DIR', UPLOAD_DIR . 'photos/');
+define('MAX_UPLOAD_FILESIZE', trim(ini_get('upload_max_filesize')));
+
+
+
+// Application Page Settings
+define("DEFAULT_PAGE", "index"); //Default Controller Class
+define("DEFAULT_PAGE_ACTION", "index"); //Default Controller Action
+
+define('DEFAULT_LAYOUT', 'main_layout.php');
+define('HOME_PAGE', 'home');
+define("DEFAULT_LANGUAGE", "english"); //Default Language
+
+
+
+// Page Meta Information
+define('META_AUTHOR', '');
+define('META_DESCRIPTION', '');
+define('META_KEYWORDS', '');
+define('META_VIEWPORT', 'width=device-width, initial-scale=1.0');
+define('PAGE_CHARSET', 'UTF-8');
+
+define('USE_SMTP', true);
+define('SMTP_USERNAME', 'lucassctt4@gmail.com');
+define('SMTP_PASSWORD', 'jmpn bmpp domy gmau');
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_PORT', '465');
+
+//Default Email Sender Details. Please set this even if you are not using SMTP
+define('DEFAULT_EMAIL', 'lucassctt4@gmail.com');
+define('DEFAULT_EMAIL_ACCOUNT_NAME', 'lucs');
+
+
+// Database Configuration Settings
+define('DB_HOST', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'Root@123.');
+define('DB_NAME', 'televet');
+define('DB_TYPE', 'mysql');
+define('DB_PORT', ''); //You can leave empty if using default.
+
+define('DB_CHARSET', 'utf8');
+
+define('MAX_RECORD_COUNT', 50); //Default Max Records to Retrieve  per Page
+define('ORDER_TYPE', 'DESC');  //Default Order Type
+
+// Active User Profile Details
+define('USER_ID', (isset($_SESSION[APP_ID . 'user_bid']) ? $_SESSION[APP_ID . 'user_bid']["msisdn"] : null));
+define('USER_POINTS', (isset($_SESSION[APP_ID . 'user_bid']) ? $_SESSION[APP_ID . 'user_bid']["points"] : null));

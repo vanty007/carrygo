@@ -63,8 +63,8 @@ class BidController extends SecureController
 		$db = $this->GetModel();
 
 		$user = "0";
-		$user_points = "0";
-		$timer = "0";
+		$user_points = 0;
+		$timer = 0;
 		if (!empty(get_session('user_bid'))) {
 			$user = get_session('user_bid')['msisdn'];
 			$user_points = $db->rawQueryOne("SELECT points FROM carrygo_active_points where msisdn='$user' order by id desc limit 1");
@@ -81,8 +81,9 @@ class BidController extends SecureController
 
 			$dayinpass = strtotime($bid_activepoints['created_at']);
 			//$today = time();
-			$today = strtotime("Y-m-d H:i:s");
+			$today = strtotime(date('Y-m-d H:i:s'));
 			$timer = $bid_activepoints['open_date'] - floor(abs($today - $dayinpass) / 60 / 60);
+			// echo $timer;
 			//$timer = (5-(round(abs($today-$dayinpass)/60)));
 
 			if ($timer <= 0 && $bid_activepoints['status'] == 0) {
@@ -121,7 +122,7 @@ class BidController extends SecureController
 		if ($records) {
 			$limit = $this->get_page_limit(MAX_RECORD_COUNT); //Get sql limit from url if not set on the sql command text
 			$tc = $db->withTotalCount();
-			$records2 = array("user_points" => $user_points, "user" => $user, "timer" => $timer);
+			$records2 = array("user_points" => $user_points, "user" => $user, "timer" => $timer, "dayinpass" => $dayinpass, "today" => $today);
 			$data = new stdClass;
 			$data->records = $arr_story;
 			$data->records2 = $records2;

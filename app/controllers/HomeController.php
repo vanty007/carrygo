@@ -126,7 +126,7 @@ class HomeController extends SecureController
 
 						$dayinpass = strtotime($carrygo_bid_active['created_at']);
 						//$today = time();
-						$today = strtotime("Y-m-d H:i:s");
+						$today = strtotime(date('Y-m-d H:i:s'));
 
 						/*$active_bid_timer = abs(date("Y-m-d h:i:s") - $carrygo_bid_active['created_at']);
 			$hours = floor(($active_bid_timer % 86400) / 3600);*/

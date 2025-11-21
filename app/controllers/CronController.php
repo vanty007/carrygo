@@ -20,7 +20,7 @@ class CronController extends BaseController
 				b.open_date, b.id as bid_id, b.status as bid_status
 				FROM carrygo_bid_active a
 				INNER JOIN carrygo_bid b ON b.id = a.bidid
-				WHERE a.status = 0 AND b.status = 0";
+				WHERE a.status = 0 AND b.status = 1";
 
         $active_bids = $db->rawQuery($sql);
 
@@ -30,7 +30,7 @@ class CronController extends BaseController
         foreach ($active_bids as $bid) {
             try {
                 $dayinpass = strtotime($bid['created_at']);
-                $today = strtotime("Y-m-d H:i:s");
+                $today = strtotime(date('Y-m-d H:i:s'));
 
                 // Calculate hours elapsed since bid was activated
                 $hours_elapsed = floor(abs($today - $dayinpass) / 60 / 60);
